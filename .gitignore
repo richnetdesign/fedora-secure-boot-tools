@@ -1,0 +1,4 @@
+*.der
+*.pem
+*.key
+*.priv
