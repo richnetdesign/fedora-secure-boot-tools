@@ -36,23 +36,21 @@ do
     module_basename=${modulepath:0:-3}
     module_suffix=${modulepath: -3}
 
-    #echo $module_basename
-
     if [[ "$module_suffix" == ".xz" ]]; then
-        
         unxz $modulepath
         echo sign-file sha256 "${MOK_KEY}" "${MOK_X509}" "${module_basename}"
         sign-file $SHA_FORMAT  "${MOK_KEY}" "${MOK_X509}" "${module_basename}"
         xz -f ${module_basename}
 
     elif [[ "$module_suffix" == ".gz" ]]; then
-        
         gunzip $modulepath
+        echo sign-file sha256 "${MOK_KEY}" "${MOK_X509}" "${module_basename}"
         sign-file $SHA_FORMAT "${key}" "${x509}" "${module_basename}"
         gzip -9f $module_basename
 
     else
         sign-file $SHA_FORMAT "${MOK_KEY}" "${MOK_X509}" "${modulepath}"
+        echo sign-file sha256 "${MOK_KEY}" "${MOK_X509}" "${modulepath}"
     fi
 
     MODPATH=$(modinfo -n $module )
